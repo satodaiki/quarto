@@ -10,40 +10,42 @@
         </v-container>
         <!-- piece stack -->
         <piece-stack :pieces="pieceStack" />
+        <Piece />
       </v-col>
     </v-row>
   </v-container>
 </template>
 
-<script lang='ts'>
-import { Component, Vue, Ref } from 'vue-property-decorator';
-import PieceStack from '@/components/organisms/PieceStack.vue';
+<script lang="ts">
+import { Component, Vue, Ref } from "vue-property-decorator";
+import PieceStack from "@/components/organisms/PieceStack.vue";
+import Piece from "@/components/atoms/Piece.vue";
 
 export const PieceHole = {
-  YES: 'yes',
-  NO: 'no',
+  YES: "yes",
+  NO: "no"
 } as const;
 type PieceHole = typeof PieceHole[keyof typeof PieceHole];
 
 export const PieceHeight = {
-  LOW: 'low',
-  HIGH: 'high',
+  LOW: "low",
+  HIGH: "high"
 } as const;
 type PieceHeight = typeof PieceHeight[keyof typeof PieceHeight];
 
 export const PieceColor = {
-  DARK: 'dark',
-  LIGHT: 'light',
+  DARK: "dark",
+  LIGHT: "light"
 } as const;
 type PieceColor = typeof PieceColor[keyof typeof PieceColor];
 
 export const PieceForm = {
-  RECTANGLE: 'rectangle',
-  CIRCLE: 'circle',
+  RECTANGLE: "rectangle",
+  CIRCLE: "circle"
 } as const;
 type PieceForm = typeof PieceForm[keyof typeof PieceForm];
 
-export interface Piece {
+export interface IPiece {
   hole: PieceHole;
   height: PieceHeight;
   color: PieceColor;
@@ -51,14 +53,15 @@ export interface Piece {
 }
 
 @Component({
-  name: 'Main',
+  name: "Main",
   components: {
     PieceStack,
-  },
+    Piece
+  }
 })
 export default class extends Vue {
-  private pieceStackPieces: Piece[] = [];
-  private boardPieces: Piece[] = [];
+  private pieceStackPieces: IPiece[] = [];
+  private boardPieces: IPiece[] = [];
 
   async mounted() {
     for (const form of Object.values(PieceForm)) {
@@ -69,7 +72,7 @@ export default class extends Vue {
               hole,
               height,
               color,
-              form,
+              form
             });
           }
         }

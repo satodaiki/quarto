@@ -9,14 +9,14 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { Piece } from '@/components/pages/Main.vue';
+import { IPiece } from '@/components/pages/Main.vue';
 
 @Component({
   name: 'PieceStack',
 })
 export default class extends Vue {
     @Prop()
-    private pieces: Piece[] = []
+    private pieces: IPiece[] = []
 
     mounted() {
         console.log(this.pieces);
