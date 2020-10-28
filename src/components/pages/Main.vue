@@ -2,28 +2,26 @@
   <v-container>
     <v-row>
       <v-col>
-        <!-- board -->
-        <v-container>
-          <v-row>
-            <v-col></v-col>
-          </v-row>
-        </v-container>
-        <!-- piece stack -->
+        <Board />
+      </v-col>
+      <v-col>
         <PieceStack />
-        <Piece :pieceId="4" />
       </v-col>
     </v-row>
+    <!-- <Piece :pieceId="4" /> -->
   </v-container>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import Board from '@/components/organisms/Board.vue';
 import PieceStack from '@/components/organisms/PieceStack.vue';
 import Piece from '@/components/atoms/Piece.vue';
 
 @Component({
   name: 'Main',
   components: {
+    Board,
     PieceStack,
     Piece,
   },
