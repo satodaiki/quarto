@@ -12,6 +12,7 @@
             :height="180"
             :contain="true"
           >
+            <!-- <PieceImg :pieceId="calcPieceId(i, j)" /> -->
           </v-img>
         </v-col>
       </v-row>
@@ -20,10 +21,22 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
+import PieceImg from '@/components/atoms/PieceImg.vue';
+import BoardState from '@/domain/models/BoardState';
 
 @Component({
   name: 'Board',
+  components: {
+    PieceImg,
+  },
 })
-export default class extends Vue {}
+export default class extends Vue {
+  @Prop()
+  private boardState?: BoardState;
+
+  private calcPieceId(i: number, j: number): number {
+    return ((4 * (i - 1)) + (j - 1));
+  }
+}
 </script>
