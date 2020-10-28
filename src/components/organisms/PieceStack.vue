@@ -15,11 +15,11 @@ import { Piece } from '@/components/pages/Main.vue';
   name: 'PieceStack',
 })
 export default class extends Vue {
-    @Prop()
-    private pieces: Piece[] = []
+  @Prop()
+  private pieces: Piece[] = []
 
-    mounted() {
-        console.log(this.pieces);
-    }
+  mounted() {
+    console.log(this.pieces);
+  }
 }
 </script>

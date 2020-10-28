@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <PlayerName playerName="aaa"/>
     <v-row>
       <v-col>
         <!-- board -->
@@ -18,6 +19,7 @@
 <script lang='ts'>
 import { Component, Vue, Ref } from 'vue-property-decorator';
 import PieceStack from '@/components/organisms/PieceStack.vue';
+import PlayerName from '@/components/atoms/PlayerName.vue';
 
 export const PieceHole = {
   YES: 'yes',
@@ -54,11 +56,11 @@ export interface Piece {
   name: 'Main',
   components: {
     PieceStack,
+    PlayerName,
   },
 })
 export default class extends Vue {
   private pieceStackPieces: Piece[] = [];
-  private boardPieces: Piece[] = [];
 
   async mounted() {
     for (const form of Object.values(PieceForm)) {
