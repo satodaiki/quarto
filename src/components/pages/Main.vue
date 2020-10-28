@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <PlayerName playerName="aaa"/>
+    <PlayerName :playerName="playerName"/>
     <v-row>
       <v-col>
         <!-- board -->
@@ -61,6 +61,8 @@ export interface Piece {
 })
 export default class extends Vue {
   private pieceStackPieces: Piece[] = [];
+
+  private playerName = 'Aさん';
 
   async mounted() {
     for (const form of Object.values(PieceForm)) {
