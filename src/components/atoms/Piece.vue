@@ -1,12 +1,20 @@
 <template>
-  <v-img src="@/assets/board/unit.png" />
+  <v-img
+    :contain="true"
+    :height="200"
+    :width="100"
+    :src="require(`@/assets/pieces/${pieceId}.png`)"
+  />
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 
 @Component({
   name: 'Piece',
 })
-export default class extends Vue {}
+export default class extends Vue {
+  @Prop({ required: true })
+  public pieceId!: number;
+}
 </script>

@@ -8,18 +8,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import { IPiece } from '@/components/pages/Main.vue';
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component({
   name: 'PieceStack',
 })
-export default class extends Vue {
-    @Prop()
-    private pieces: IPiece[] = []
-
-    mounted() {
-        console.log(this.pieces);
-    }
-}
+export default class extends Vue {}
 </script>
