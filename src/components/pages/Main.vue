@@ -32,6 +32,8 @@ import GameField from '@/domain/models/GameField';
   },
 })
 export default class extends Vue {
+  // ボードの状態を反映させるためのコンポーネントの強制的な更新に使用
+  // https://www.tomatoaiu.com/entry/2019/09/28/133319
   private boardKey = 0;
 
   private gameField: GameField = new GameField();
