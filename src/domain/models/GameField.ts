@@ -33,9 +33,11 @@ export default class GameField {
   }
 
   // ボードにピースをセット
-  public setPiece(id: number, width: number, height: number): boolean {
-    if (this.boardState.squares && this.boardState.isBoardIn(width, height)) {
-      this.boardState.squares[width][height] = this.pieces[id];
+  public setPiece(width: number, height: number): boolean {
+    if (this.currentPlayer.pieceId !== undefined
+      && this.boardState.isBoardIn(width, height)) {
+      this.boardState.squares[width][height] = this.pieces[this.currentPlayer.pieceId];
+      this.togglePlayer();
       if (
         this.getResultHorizontal()
         || this.getResultVertical()
@@ -51,11 +53,15 @@ export default class GameField {
 
   // 相手プレイヤーに駒を渡す
   public selectPiece(pieceId: number): void {
+    this.togglePlayer();
+    this.currentPlayer.pieceId = pieceId;
+  }
+
+  // プレイヤーの切り替え
+  private togglePlayer() {
     if (this.currentPlayer.playerId === this.playerA.playerId) {
-      this.playerB.pieceId = pieceId;
       this.currentPlayer = this.playerB;
     } else {
-      this.playerA.pieceId = pieceId;
       this.currentPlayer = this.playerA;
     }
   }

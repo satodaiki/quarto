@@ -10,7 +10,7 @@
             :value="calcPieceId(i, j)"
           >
             <v-card
-              :color="active ? 'gray' : ''"
+              :color="active ? 'red' : ''"
               @click="toggle"
             >
               <PieceImg v-if="isDisplayed(i, j)" :pieceId="calcPieceId(i, j)" />
@@ -29,8 +29,8 @@ import {
   Prop,
   PropSync,
 } from 'vue-property-decorator';
-import PieceImg from '@/components/atoms/PieceImg.vue';
 import Piece from '@/domain/models/Piece';
+import PieceImg from '@/components/atoms/PieceImg.vue';
 
 @Component({
   name: 'PieceStack',

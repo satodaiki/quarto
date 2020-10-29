@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import Board from '@/components/organisms/Board.vue';
 import PieceStack from '@/components/organisms/PieceStack.vue';
 import PlayerName from '@/components/atoms/PlayerName.vue';
@@ -50,10 +50,8 @@ export default class extends Vue {
   }
 
   private setBoardPiece(payload: { width: number; height: number }) {
-    console.log('pieceId', this.selectPieceId);
     if (this.selectPieceId !== null) {
-      console.log('setBoardPiece通ってる');
-      const result = this.gameField.setPiece(this.selectPieceId, payload.width, payload.height);
+      const result = this.gameField.setPiece(payload.width, payload.height);
       this.boardKey += 1;
       if (result) {
         // eslint-disable-next-line no-alert
@@ -62,8 +60,11 @@ export default class extends Vue {
     }
   }
 
-  mounted() {
-    // this.gameField.pieces = this.gameField.pieces.filter((p) => p.getId() > 1);
+  @Watch('selectPieceId')
+  private selectPiece() {
+    if (this.selectPieceId !== null) {
+      this.gameField.selectPiece(this.selectPieceId);
+    }
   }
 }
 </script>
