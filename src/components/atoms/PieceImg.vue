@@ -11,7 +11,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
 @Component({
-  name: 'Piece',
+  name: 'PieceImg',
 })
 export default class extends Vue {
   @Prop({ required: true })
