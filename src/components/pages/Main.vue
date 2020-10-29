@@ -3,12 +3,15 @@
     <v-row>
       <v-col>
         <Board
+          :key="boardKey"
+          @setPiece="setBoardPiece"
           :boardState="gameField.boardState"
         />
       </v-col>
       <v-col>
         <PieceStack
           :pieceState="gameField.pieces"
+          :stackSelectPieceId.sync="selectPieceId"
         />
       </v-col>
     </v-row>
@@ -29,7 +32,26 @@ import GameField from '@/domain/models/GameField';
   },
 })
 export default class extends Vue {
+  private boardKey = 0;
+
   private gameField: GameField = new GameField();
+
+  private selectPieceId: number | null = null;
+
+  private setBoardPiece(payload: { width: number; height: number }) {
+    console.log('pieceId', this.selectPieceId);
+    if (this.selectPieceId) {
+      const result = this.gameField.setPiece(this.selectPieceId, payload.width, payload.height);
+      this.boardKey += 1;
+      if (result) {
+        // eslint-disable-next-line no-alert
+        alert(`${this.gameField.currentPlayer}の勝ちだよ`);
+      }
+    }
+  }
+
+  mounted() {
+    // this.gameField.pieces = this.gameField.pieces.filter((p) => p.getId() > 1);
+  }
 }
 </script>
-cxvbn

@@ -1,15 +1,43 @@
+export const PieceHole = {
+  YES: 'yes',
+  NO: 'no',
+} as const;
+type PieceHole = typeof PieceHole[keyof typeof PieceHole];
+
+export const PieceHeight = {
+  LOW: 'low',
+  HIGH: 'high',
+} as const;
+type PieceHeight = typeof PieceHeight[keyof typeof PieceHeight];
+
+export const PieceColor = {
+  DARK: 'dark',
+  LIGHT: 'light',
+} as const;
+type PieceColor = typeof PieceColor[keyof typeof PieceColor];
+
+export const PieceForm = {
+  RECTANGLE: 'rectangle',
+  CIRCLE: 'circle',
+} as const;
+type PieceForm = typeof PieceForm[keyof typeof PieceForm];
+
 export default class Piece {
-    private id;
+    private id: number;
 
-    private hole;
+    private hole: PieceHole;
 
-    private color;
+    private color: PieceColor;
 
-    private height;
+    private height: PieceHeight;
 
-    private form;
+    private form: PieceForm;
 
-    public constructor(id: number, hole: 'with' | 'without', color: 'white' | 'black', height: 'low' | 'high', form: 'circle' | 'rectangle') {
+    public constructor(id: number,
+      hole: PieceHole,
+      color: PieceColor,
+      height: PieceHeight,
+      form: PieceForm) {
       this.id = id;
       this.hole = hole;
       this.color = color;
