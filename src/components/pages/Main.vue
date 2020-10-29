@@ -42,12 +42,13 @@ export default class extends Vue {
 
   private setBoardPiece(payload: { width: number; height: number }) {
     console.log('pieceId', this.selectPieceId);
-    if (this.selectPieceId) {
+    if (this.selectPieceId !== null) {
+      console.log('setBoardPiece通ってる');
       const result = this.gameField.setPiece(this.selectPieceId, payload.width, payload.height);
       this.boardKey += 1;
       if (result) {
         // eslint-disable-next-line no-alert
-        alert(`${this.gameField.currentPlayer}の勝ちだよ`);
+        alert(`${this.gameField.currentPlayer.playerId}の勝ちだよ`);
       }
     }
   }
