@@ -1,6 +1,9 @@
 <template>
   <v-container>
     <v-row>
+      <PlayerName :playerName="currentPlayerName()"/>
+    </v-row>
+    <v-row>
       <v-col>
         <Board
           :key="boardKey"
@@ -22,6 +25,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import Board from '@/components/organisms/Board.vue';
 import PieceStack from '@/components/organisms/PieceStack.vue';
+import PlayerName from '@/components/atoms/PlayerName.vue';
 import GameField from '@/domain/models/GameField';
 
 @Component({
@@ -29,6 +33,7 @@ import GameField from '@/domain/models/GameField';
   components: {
     Board,
     PieceStack,
+    PlayerName,
   },
 })
 export default class extends Vue {
@@ -39,6 +44,10 @@ export default class extends Vue {
   private gameField: GameField = new GameField();
 
   private selectPieceId: number | null = null;
+
+  private currentPlayerName() {
+    return this.gameField.currentPlayer.playerId;
+  }
 
   private setBoardPiece(payload: { width: number; height: number }) {
     console.log('pieceId', this.selectPieceId);

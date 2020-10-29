@@ -52,16 +52,5 @@ export default class extends Vue {
   private calcPieceId(i: number, j: number): number {
     return ((4 * (i - 1)) + (j - 1));
   }
-
-  // private clickCard(toggle: Function) {
-  //   // console.log(this.pieceItem);
-  //   toggle();
-  // }
-
-  // @Emit()
-  // delete(pieceId: number) {
-  //   pieceId
-  //   return this.value;
-  // }
 }
 </script>
