@@ -1,7 +1,14 @@
 <template>
   <v-container>
-    <v-row>
+    <v-row justify="center">
       <PlayerName :playerName="currentPlayerName()"/>
+    </v-row>
+    <v-row class="my-4" justify="center">
+      <v-btn
+        x-large
+      >
+        Quarto!
+      </v-btn>
     </v-row>
     <v-row justify="center">
       <v-col md="12" lg="12" xl="7">
