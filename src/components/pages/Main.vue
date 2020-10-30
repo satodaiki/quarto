@@ -1,7 +1,15 @@
 <template>
   <v-container>
-    <v-row>
+    <v-row justify="center">
       <PlayerName :playerName="currentPlayerName()"/>
+    </v-row>
+    <v-row class="my-4" justify="center">
+      <v-btn
+        x-large
+        @click="result()"
+      >
+        Quarto!
+      </v-btn>
     </v-row>
     <v-row justify="center">
       <v-col md="12" lg="12" xl="7">
@@ -25,7 +33,7 @@
     <ResultNotification
       :show="showResultNotification"
       :playerName="currentPlayerName()"
-      :result="result"
+      :result="resultState"
     />
   </v-container>
 </template>
@@ -62,7 +70,7 @@ export default class extends Vue {
 
   private showResultNotification = false;
 
-  private result?: boolean;
+  private resultState?: boolean;
 
   private currentPlayerName() {
     return this.gameField.currentPlayer.playerId;
@@ -71,14 +79,14 @@ export default class extends Vue {
   private setBoardPiece(payload: { width: number; height: number }) {
     if (this.selectPieceId !== null) {
       this.toggleDisabled();
-      this.result = this.gameField.setPiece(payload.height, payload.width);
-      if (this.result) this.showResultNotification = true;
+      this.gameField.setPiece(payload.height, payload.width);
       this.boardKey += 1;
-      // if (result) {
-      //   // eslint-disable-next-line no-alert
-      //   alert(`${this.gameField.currentPlayer.playerId}の勝ちだよ`);
-      // }
     }
+  }
+
+  private result() {
+    this.showResultNotification = true;
+    this.resultState = this.gameField.getJudgeResult();
   }
 
   private toggleDisabled() {
