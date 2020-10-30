@@ -33,18 +33,22 @@ export default class GameField {
   }
 
   // ボードにピースをセット
-  public setPiece(width: number, height: number): boolean {
+  public setPiece(width: number, height: number): void {
     if (this.currentPlayer.pieceId !== undefined
       && this.boardState.isBoardIn(width, height)) {
       this.boardState.squares[height][width] = this.pieces[this.currentPlayer.pieceId];
-      if (
-        this.getResultHorizontal()
-        || this.getResultVertical()
-        || this.getResultRightDownDiagonal()
-        || this.getResultRightUpDiagonal()
-      ) {
-        return true;
-      }
+    }
+  }
+
+  // 判定結果を返す
+  public getJudgeResult() {
+    if (
+      this.getResultHorizontal()
+      || this.getResultVertical()
+      || this.getResultRightDownDiagonal()
+      || this.getResultRightUpDiagonal()
+    ) {
+      return true;
     }
 
     return false;
