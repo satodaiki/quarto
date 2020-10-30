@@ -1,5 +1,5 @@
 <template>
-    <p>{{playerName}}さんの番です</p>
+  <span class="text-h3">{{playerName}}さんの番です</span>
 </template>
 
 <script lang="ts">
@@ -10,6 +10,6 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 })
 export default class extends Vue {
   @Prop()
-  private playerName: string
+  private playerName?: string;
 }
 </script>
