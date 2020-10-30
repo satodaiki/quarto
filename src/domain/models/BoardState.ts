@@ -10,6 +10,6 @@ export default class BoardState {
 
   // ボードに置かれているか
   public isBoardIn(width: number, height: number): boolean {
-    return !!(this.squares && this.squares[width][height] == null);
+    return !!(this.squares && this.squares[height][width] == null);
   }
 }

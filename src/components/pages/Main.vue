@@ -53,7 +53,7 @@ export default class extends Vue {
 
   private setBoardPiece(payload: { width: number; height: number }) {
     if (this.selectPieceId !== null) {
-      const result = this.gameField.setPiece(payload.width, payload.height);
+      const result = this.gameField.setPiece(payload.height, payload.width);
       this.boardKey += 1;
       if (result) {
         // eslint-disable-next-line no-alert
