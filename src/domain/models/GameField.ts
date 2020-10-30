@@ -37,7 +37,6 @@ export default class GameField {
     if (this.currentPlayer.pieceId !== undefined
       && this.boardState.isBoardIn(width, height)) {
       this.boardState.squares[height][width] = this.pieces[this.currentPlayer.pieceId];
-      this.togglePlayer();
       if (
         this.getResultHorizontal()
         || this.getResultVertical()
