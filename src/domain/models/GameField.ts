@@ -36,8 +36,7 @@ export default class GameField {
   public setPiece(width: number, height: number): boolean {
     if (this.currentPlayer.pieceId !== undefined
       && this.boardState.isBoardIn(width, height)) {
-      this.boardState.squares[width][height] = this.pieces[this.currentPlayer.pieceId];
-      this.togglePlayer();
+      this.boardState.squares[height][width] = this.pieces[this.currentPlayer.pieceId];
       if (
         this.getResultHorizontal()
         || this.getResultVertical()
@@ -72,28 +71,42 @@ export default class GameField {
     let baseColor;
     let baseHeight;
     let baseForm;
+    let matchHoleCnt;
+    let matchColorCnt;
+    let matchHeightCnt;
+    let matchFormCnt;
 
     for (let i = 0; i < 4; i++) {
-      // 判定のベース取得
       if (this.boardState.squares && this.boardState.squares[i][0] !== null) {
         baseHole = this.boardState.squares[i][0]!.getHole();
         baseColor = this.boardState.squares[i][0]!.getColor();
         baseHeight = this.boardState.squares[i][0]!.getHeight();
         baseForm = this.boardState.squares[i][0]!.getForm();
+        matchHoleCnt = 1;
+        matchColorCnt = 1;
+        matchHeightCnt = 1;
+        matchFormCnt = 1;
       } else {
         continue;
       }
 
       for (let j = 1; j < 4; j++) {
         if (this.boardState.squares[i][j] !== null) {
-          if (baseHole != this.boardState.squares[i][j]!.getHole()) break;
-          if (baseColor != this.boardState.squares[i][j]!.getColor()) break;
-          if (baseForm != this.boardState.squares[i][j]!.getForm()) break;
-          if (baseHeight != this.boardState.squares[i][j]!.getHeight()) break;
+          if (baseHole == this.boardState.squares[i][j]!.getHole()) matchHoleCnt++;
+          if (baseColor == this.boardState.squares[i][j]!.getColor()) matchColorCnt++;
+          if (baseForm == this.boardState.squares[i][j]!.getForm()) matchFormCnt++;
+          if (baseHeight == this.boardState.squares[i][j]!.getHeight()) matchHeightCnt++;
         } else {
           break;
         }
+      }
 
+      if (
+        matchHoleCnt == 4
+        || matchColorCnt == 4
+        || matchFormCnt == 4
+        || matchHeightCnt == 4
+      ) {
         return true;
       }
     }
@@ -107,6 +120,10 @@ export default class GameField {
     let baseColor;
     let baseHeight;
     let baseForm;
+    let matchHoleCnt;
+    let matchColorCnt;
+    let matchHeightCnt;
+    let matchFormCnt;
 
     for (let i = 0; i < 4; i++) {
       // 判定のベース取得
@@ -115,20 +132,31 @@ export default class GameField {
         baseColor = this.boardState.squares[0][i]!.getColor();
         baseHeight = this.boardState.squares[0][i]!.getHeight();
         baseForm = this.boardState.squares[0][i]!.getForm();
+        matchHoleCnt = 1;
+        matchColorCnt = 1;
+        matchHeightCnt = 1;
+        matchFormCnt = 1;
       } else {
         continue;
       }
 
       for (let j = 1; j < 4; j++) {
         if (this.boardState.squares[j][i] !== null) {
-          if (baseHole != this.boardState.squares[j][i]!.getHole()) break;
-          if (baseColor != this.boardState.squares[j][i]!.getColor()) break;
-          if (baseForm != this.boardState.squares[j][i]!.getForm()) break;
-          if (baseHeight != this.boardState.squares[j][i]!.getHeight()) break;
+          if (baseHole == this.boardState.squares[j][i]!.getHole()) matchHoleCnt++;
+          if (baseColor == this.boardState.squares[j][i]!.getColor()) matchColorCnt++;
+          if (baseForm == this.boardState.squares[j][i]!.getForm()) matchFormCnt++;
+          if (baseHeight == this.boardState.squares[j][i]!.getHeight()) matchHeightCnt++;
         } else {
           break;
         }
+      }
 
+      if (
+        matchHoleCnt == 4
+        || matchColorCnt == 4
+        || matchFormCnt == 4
+        || matchHeightCnt == 4
+      ) {
         return true;
       }
     }
@@ -142,6 +170,10 @@ export default class GameField {
     let baseColor;
     let baseHeight;
     let baseForm;
+    let matchHoleCnt = 1;
+    let matchColorCnt = 1;
+    let matchHeightCnt = 1;
+    let matchFormCnt = 1;
 
     // 判定のベース取得
     if (this.boardState.squares && this.boardState.squares[0][0] !== null) {
@@ -155,16 +187,25 @@ export default class GameField {
 
     for (let i = 1; i < 4; i++) {
       if (this.boardState.squares[i][i] !== null) {
-        if (baseHole != this.boardState.squares[i][i]!.getHole()) return false;
-        if (baseColor != this.boardState.squares[i][i]!.getColor()) return false;
-        if (baseForm != this.boardState.squares[i][i]!.getForm()) return false;
-        if (baseHeight != this.boardState.squares[i][i]!.getHeight()) return false;
+        if (baseHole == this.boardState.squares[i][i]!.getHole()) matchHoleCnt++;
+        if (baseColor == this.boardState.squares[i][i]!.getColor()) matchColorCnt++;
+        if (baseForm == this.boardState.squares[i][i]!.getForm()) matchFormCnt++;
+        if (baseHeight == this.boardState.squares[i][i]!.getHeight()) matchHeightCnt++;
       } else {
         return false;
       }
+
+      if (
+        matchHoleCnt == 4
+        || matchColorCnt == 4
+        || matchFormCnt == 4
+        || matchHeightCnt == 4
+      ) {
+        return true;
+      }
     }
 
-    return true;
+    return false;
   }
 
   // 結果判定(右上斜め)
@@ -173,6 +214,10 @@ export default class GameField {
     let baseColor;
     let baseHeight;
     let baseForm;
+    let matchHoleCnt = 1;
+    let matchColorCnt = 1;
+    let matchHeightCnt = 1;
+    let matchFormCnt = 1;
 
     // 判定のベース取得
     if (this.boardState.squares && this.boardState.squares[0][3] !== null) {
@@ -186,16 +231,25 @@ export default class GameField {
 
     for (let i = 1; i < 4; i++) {
       if (this.boardState.squares[i][3 - i] !== null) {
-        if (baseHole != this.boardState.squares[i][3 - i]!.getHole()) return false;
-        if (baseColor != this.boardState.squares[i][3 - i]!.getColor()) return false;
-        if (baseForm != this.boardState.squares[i][3 - i]!.getForm()) return false;
-        if (baseHeight != this.boardState.squares[i][3 - i]!.getHeight()) return false;
+        if (baseHole == this.boardState.squares[i][3 - i]!.getHole()) matchHoleCnt++;
+        if (baseColor == this.boardState.squares[i][3 - i]!.getColor()) matchColorCnt++;
+        if (baseForm == this.boardState.squares[i][3 - i]!.getForm()) matchFormCnt++;
+        if (baseHeight == this.boardState.squares[i][3 - i]!.getHeight()) matchHeightCnt++;
       } else {
         return false;
       }
+
+      if (
+        matchHoleCnt == 4
+        || matchColorCnt == 4
+        || matchFormCnt == 4
+        || matchHeightCnt == 4
+      ) {
+        return true;
+      }
     }
 
-    return true;
+    return false;
   }
 
   // ピースを作成
