@@ -1,5 +1,6 @@
 <template>
-  <v-sheet
+  <v-card
+    :disabled="disabled"
     color="brown darken-1"
     elevation="3"
   >
@@ -25,7 +26,7 @@
         </v-row>
       </v-container>
     </v-item-group>
-  </v-sheet>
+  </v-card>
 </template>
 
 <script lang="ts">
@@ -47,6 +48,9 @@ import PieceImg from '@/components/atoms/PieceImg.vue';
 export default class extends Vue {
   @Prop()
   private pieceState!: Piece[];
+
+  @Prop({ type: Boolean, required: true })
+  private disabled!: boolean;
 
   @PropSync('stackSelectPieceId', { type: Number })
   private selectPieceId!: number;

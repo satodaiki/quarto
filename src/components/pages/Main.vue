@@ -17,21 +17,29 @@
           :key="boardKey"
           @setPiece="setBoardPiece"
           :boardState="gameField.boardState"
+          :disabled="boardDisabled"
         />
       </v-col>
       <v-col md="12" lg="12" xl="5">
       <!-- <v-col> -->
         <PieceStack
+          :disabled="pieceStackDisabled"
           :pieceState="gameField.pieces"
           :stackSelectPieceId.sync="selectPieceId"
         />
       </v-col>
     </v-row>
+    <ResultNotification
+      :show="showResultNotification"
+      :playerName="currentPlayerName()"
+      :result="result"
+    />
   </v-container>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
+import ResultNotification from '@/components/organisms/ResultNotification.vue';
 import Board from '@/components/organisms/Board.vue';
 import PieceStack from '@/components/organisms/PieceStack.vue';
 import PlayerName from '@/components/atoms/PlayerName.vue';
@@ -40,6 +48,7 @@ import GameField from '@/domain/models/GameField';
 @Component({
   name: 'Main',
   components: {
+    ResultNotification,
     Board,
     PieceStack,
     PlayerName,
@@ -54,24 +63,40 @@ export default class extends Vue {
 
   private selectPieceId: number | null = null;
 
+  private boardDisabled = true;
+
+  private pieceStackDisabled = false;
+
+  private showResultNotification = false;
+
+  private result?: boolean;
+
   private currentPlayerName() {
     return this.gameField.currentPlayer.playerId;
   }
 
   private setBoardPiece(payload: { width: number; height: number }) {
     if (this.selectPieceId !== null) {
-      const result = this.gameField.setPiece(payload.height, payload.width);
+      this.toggleDisabled();
+      this.result = this.gameField.setPiece(payload.height, payload.width);
+      if (this.result) this.showResultNotification = true;
       this.boardKey += 1;
-      if (result) {
-        // eslint-disable-next-line no-alert
-        alert(`${this.gameField.currentPlayer.playerId}の勝ちだよ`);
-      }
+      // if (result) {
+      //   // eslint-disable-next-line no-alert
+      //   alert(`${this.gameField.currentPlayer.playerId}の勝ちだよ`);
+      // }
     }
+  }
+
+  private toggleDisabled() {
+    this.boardDisabled = !this.boardDisabled;
+    this.pieceStackDisabled = !this.pieceStackDisabled;
   }
 
   @Watch('selectPieceId')
   private selectPiece() {
     if (this.selectPieceId !== null) {
+      this.toggleDisabled();
       this.gameField.selectPiece(this.selectPieceId);
     }
   }

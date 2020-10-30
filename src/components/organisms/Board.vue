@@ -1,5 +1,6 @@
 <template>
-  <v-sheet
+  <v-card
+    :disabled="disabled"
     class="pa-5"
     rounded="xl"
     color="grey darken-4"
@@ -30,7 +31,7 @@
         </v-container>
       </v-container>
     </v-img>
-  </v-sheet>
+  </v-card>
 </template>
 
 <script lang="ts">
@@ -50,8 +51,11 @@ import BoardState from '@/domain/models/BoardState';
   },
 })
 export default class extends Vue {
-  @Prop()
+  @Prop({ type: Object })
   private boardState?: BoardState;
+
+  @Prop({ type: Boolean, required: true })
+  private disabled!: boolean;
 
   @Emit('setPiece')
   private setPiece(width: number, height: number) {
