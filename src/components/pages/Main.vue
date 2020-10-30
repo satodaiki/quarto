@@ -3,15 +3,17 @@
     <v-row>
       <PlayerName :playerName="currentPlayerName()"/>
     </v-row>
-    <v-row>
-      <v-col>
+    <v-row justify="center">
+      <v-col md="12" lg="12" xl="7">
+      <!-- <v-col> -->
         <Board
           :key="boardKey"
           @setPiece="setBoardPiece"
           :boardState="gameField.boardState"
         />
       </v-col>
-      <v-col>
+      <v-col md="12" lg="12" xl="5">
+      <!-- <v-col> -->
         <PieceStack
           :pieceState="gameField.pieces"
           :stackSelectPieceId.sync="selectPieceId"

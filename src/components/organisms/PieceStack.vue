@@ -1,25 +1,31 @@
 <template>
-  <v-item-group
-    v-model="selectPieceId"
+  <v-sheet
+    color="brown darken-1"
+    elevation="3"
   >
-    <v-container fill-height class="flex-nowrap">
-      <v-row v-for="i in 4" :key="i" justify="center" no-gutters>
-        <v-col v-for="j in 4" :key="j" md="auto">
-          <v-item
-            v-slot="{ active, toggle }"
-            :value="calcPieceId(i, j)"
-          >
-            <v-card
-              :color="active ? 'red' : ''"
-              @click="toggle"
+    <v-item-group
+      v-model="selectPieceId"
+    >
+      <v-container fill-height>
+        <v-row v-for="i in 4" :key="i" no-gutters>
+          <v-col v-for="j in 4" :key="j" md="auto">
+            <v-item
+              v-slot="{ active, toggle }"
+              :value="calcPieceId(i, j)"
             >
-              <PieceImg v-if="isDisplayed(i, j)" :pieceId="calcPieceId(i, j)" />
-            </v-card>
-          </v-item>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-item-group>
+              <v-card
+                elevation="0"
+                :color="active ? 'brown darken-3' : 'transparent'"
+                @click="toggle"
+              >
+                <PieceImg v-if="isDisplayed(i, j)" :pieceId="calcPieceId(i, j)" />
+              </v-card>
+            </v-item>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-item-group>
+  </v-sheet>
 </template>
 
 <script lang="ts">
