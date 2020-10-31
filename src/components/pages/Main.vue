@@ -4,6 +4,9 @@
       <PlayerName :playerName="currentPlayerName()"/>
     </v-row>
     <v-row class="my-4" justify="center">
+      <div>{{ actionMessage() }}</div>
+    </v-row>
+    <v-row class="my-4" justify="center">
       <v-btn
         x-large
         @click="result()"
@@ -74,6 +77,14 @@ export default class extends Vue {
 
   private currentPlayerName() {
     return this.gameField.currentPlayer.playerId;
+  }
+
+  private actionMessage() {
+    if (this.boardDisabled) {
+      return '駒を選択して下さい。';
+    }
+
+    return 'ボードに配置して下さい。';
   }
 
   private setBoardPiece(payload: { width: number; height: number }) {
