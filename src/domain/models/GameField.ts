@@ -37,6 +37,7 @@ export default class GameField {
     if (this.currentPlayer.pieceId !== undefined
       && this.boardState.isBoardIn(width, height)) {
       this.boardState.squares[height][width] = this.pieces[this.currentPlayer.pieceId];
+      this.pieces.splice(this.currentPlayer.pieceId, 1);
     }
   }
 
