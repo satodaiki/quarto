@@ -15,7 +15,7 @@
       </v-btn>
     </v-row>
     <v-row justify="center">
-      <v-col md="12" lg="12" xl="7">
+      <v-col cols="7">
       <!-- <v-col> -->
         <Board
           :key="boardKey"
@@ -24,7 +24,7 @@
           :disabled="boardDisabled"
         />
       </v-col>
-      <v-col md="12" lg="12" xl="5">
+      <v-col cols="5">
       <!-- <v-col> -->
         <PieceStack
           :disabled="pieceStackDisabled"
