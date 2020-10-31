@@ -8,18 +8,18 @@
       v-model="selectPieceId"
     >
       <v-container fill-height>
-        <v-row v-for="i in 4" :key="i" no-gutters>
-          <v-col v-for="j in 4" :key="j" md="auto">
+        <v-row v-for="pieceRow in pieceIds" :key="pieceRow" no-gutters>
+          <v-col v-for="pieceId in pieceRow" :key="pieceId" md="auto">
             <v-item
               v-slot="{ active, toggle }"
-              :value="calcPieceId(i, j)"
+              :value="pieceId"
             >
               <v-card
                 elevation="0"
                 :color="active ? 'brown darken-3' : 'transparent'"
                 @click="toggle"
               >
-                <PieceImg v-if="isDisplayed(i, j)" :pieceId="calcPieceId(i, j)" />
+                <PieceImg v-if="isDisplayed(pieceId)" :pieceId="pieceId" />
               </v-card>
             </v-item>
           </v-col>
@@ -46,7 +46,7 @@ import PieceImg from '@/components/atoms/PieceImg.vue';
   },
 })
 export default class extends Vue {
-  @Prop()
+  @Prop({ type: Array, required: true })
   private pieceState!: Piece[];
 
   @Prop({ type: Boolean, required: true })
@@ -55,12 +55,40 @@ export default class extends Vue {
   @PropSync('stackSelectPieceId', { type: Number })
   private selectPieceId!: number;
 
-  private isDisplayed(i: number, j: number) {
-    return this.pieceState.findIndex((p) => p.getId() === this.calcPieceId(i, j)) !== -1;
+  private pieceIds: number[][] = [];
+
+  mounted() {
+    for (let i = 0; i < 4; i++) {
+      this.pieceIds.push([]);
+      for (let j = 0; j < 4; j++) {
+        const piece = this.pieceState[4 * i + j];
+        if (piece !== null) {
+          this.pieceIds[i].push(this.pieceState[4 * i + j].getId());
+        } else {
+          break;
+        }
+      }
+    }
   }
 
-  private calcPieceId(i: number, j: number): number {
-    return ((4 * (i - 1)) + (j - 1));
+  // updated() {
+  //   for (let i = 0; i < 4; i++) {
+  //     this.pieceIds.push([]);
+  //     for (let j = 0; j < 4; j++) {
+  //       const piece = this.pieceState[4 * i + j];
+  //       if (piece !== null) {
+  //         this.pieceIds[i].push(this.pieceState[4 * i + j].getId());
+  //       } else {
+  //         break;
+  //       }
+  //     }
+  //   }
+  // }
+
+  private isDisplayed(pieceId: number) {
+    // this.pieceState.findIndex((p) => p.getId() === pieceId);
+    return !!this.pieceState[pieceId];
+    // return this.pieceState.findIndex((p) => p.getId() === pieceId) !== -1;
   }
 }
 </script>

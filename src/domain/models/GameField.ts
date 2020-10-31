@@ -21,7 +21,7 @@ export default class GameField {
 
   public boardState: BoardState;
 
-  public pieces: Piece[] = [];
+  public pieces: Array<Piece | null> = [];
 
   constructor() {
     this.playerA = new Player(0);
@@ -37,7 +37,7 @@ export default class GameField {
     if (this.currentPlayer.pieceId !== undefined
       && this.boardState.isBoardIn(width, height)) {
       this.boardState.squares[height][width] = this.pieces[this.currentPlayer.pieceId];
-      this.pieces.splice(this.currentPlayer.playerId, 1);
+      delete this.pieces[this.currentPlayer.pieceId];
     }
   }
 
