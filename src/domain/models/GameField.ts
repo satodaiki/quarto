@@ -24,8 +24,8 @@ export default class GameField {
   public pieces: Array<Piece | null> = [];
 
   constructor() {
-    this.playerA = new Player(0);
-    this.playerB = new Player(1);
+    this.playerA = new Player('A');
+    this.playerB = new Player('B');
     this.currentPlayer = this.playerA;
     // this.pieceState = new PieceState();
     this.boardState = new BoardState();

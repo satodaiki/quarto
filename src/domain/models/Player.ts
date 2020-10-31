@@ -1,9 +1,9 @@
 export default class Player {
-    public playerId: number;
+    public playerId: string;
 
     public pieceId?: number;
 
-    constructor(playerId: number) {
+    constructor(playerId: string) {
       this.playerId = playerId;
     }
 }
