@@ -10,8 +10,6 @@ import 'express-async-errors';
 import BaseRouter from './routes';
 import logger from '@shared/Logger';
 
-import http from 'http';
-import socketio from 'socket.io';
 import { createConnection } from 'net';
 
 
@@ -19,15 +17,6 @@ import { createConnection } from 'net';
 
 const app = express();
 const { BAD_REQUEST } = StatusCodes;
-
-// const server = http.createServer(app);
-// const io = socketio(server);
-
-// io.on("connection", (socket) => {
-//     socket.on("hoge_message", (msg: string) => {
-//         io.emit("hoge_message", msg);
-//     });
-// })
 
 // socketio(app);
 
