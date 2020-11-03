@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import Start from '@/components/pages/Start.vue';
 import Main from '@/components/pages/Main.vue';
+import WebsocketTest from '@/components/pages/WebsocketTest.vue';
 
 Vue.use(VueRouter);
 
@@ -20,6 +21,11 @@ const routes: Array<RouteConfig> = [
     path: '/main',
     name: 'Main',
     component: Main,
+  },
+  {
+    path: '/websocket_test',
+    name: 'WebsocketTest',
+    component: WebsocketTest,
   },
 ];
 

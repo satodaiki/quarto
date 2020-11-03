@@ -12,9 +12,6 @@ import logger from '@shared/Logger';
 
 import { createConnection } from 'net';
 
-
-// const io: socketio.Server = socketio(server);
-
 const app = express();
 const { BAD_REQUEST } = StatusCodes;
 
