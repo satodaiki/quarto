@@ -9,7 +9,7 @@ import store from '@/store';
   name: 'webSocketState',
 })
 export default class WebSocketState extends VuexModule {
-  public socket = io.connect('http://localhost:3000');
+  public socket = io.connect(process.env.VUE_APP_API_BACKEND_URL);
 }
 
 export const WebSocketStateModule = getModule(WebSocketState);
