@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row justify="center">
-      <PlayerName :playerName="currentPlayerName()"/>
+      <PlayerName :playerName="currentPlayerName"/>
     </v-row>
     <v-row class="my-4" justify="center">
       <div>{{ actionMessage() }}</div>
@@ -20,24 +20,32 @@
         <Board
           :key="boardKey"
           @setPiece="setBoardPiece"
-          :boardState="gameField.boardState"
+          :boardState="boardState"
           :disabled="boardDisabled"
         />
       </v-col>
       <v-col md="12" lg="12" xl="5">
       <!-- <v-col> -->
         <PieceStack
+          :key="pieceStackKey"
           :disabled="pieceStackDisabled"
-          :pieceState="gameField.pieces"
+          :pieceState="pieces"
           :stackSelectPieceId.sync="selectPieceId"
         />
       </v-col>
     </v-row>
     <ResultNotification
       :show="showResultNotification"
-      :playerName="currentPlayerName()"
+      :playerName="currentPlayerName"
       :result="resultState"
     />
+    <v-overlay :value="!isUserTurn()">
+      <v-container fill-height>
+        <v-row justify="center">
+          相手のターンです。
+        </v-row>
+      </v-container>
+    </v-overlay>
   </v-container>
 </template>
 
@@ -47,7 +55,12 @@ import ResultNotification from '@/components/organisms/ResultNotification.vue';
 import Board from '@/components/organisms/Board.vue';
 import PieceStack from '@/components/organisms/PieceStack.vue';
 import PlayerName from '@/components/atoms/PlayerName.vue';
-import GameField from '@/domain/models/GameField';
+// import GameField from '@/domain/models/GameField';
+import BoardState from '@/domain/models/BoardState';
+import Piece from '@/domain/models/Piece';
+import Player from '@/domain/models/Player';
+import { WebSocketStateModule } from '@/store/modules/WebSocketStateModule';
+import { RoomModule } from '@/store/modules/RoomModule';
 
 @Component({
   name: 'Main',
@@ -63,7 +76,13 @@ export default class extends Vue {
   // https://www.tomatoaiu.com/entry/2019/09/28/133319
   private boardKey = 0;
 
-  private gameField: GameField = new GameField();
+  private pieceStackKey = 0;
+
+  // private gameField: GameField = new GameField();
+
+  private boardState: BoardState | null = null;
+
+  private pieces: Array<Piece | null> | null = null;
 
   private selectPieceId: number | null = null;
 
@@ -73,10 +92,22 @@ export default class extends Vue {
 
   private showResultNotification = false;
 
-  private resultState?: boolean;
+  private resultState: boolean | null = null;
 
-  private currentPlayerName() {
-    return this.gameField.currentPlayer.playerId;
+  private currentPlayerId: string | null = null;
+
+  private currentPlayerName: string | null = null;
+
+  mounted() {
+    this.syncGameField();
+  }
+
+  get socket() {
+    return WebSocketStateModule.socket;
+  }
+
+  private isUserTurn() {
+    return RoomModule.isUserTurn;
   }
 
   private actionMessage() {
@@ -89,28 +120,69 @@ export default class extends Vue {
 
   private setBoardPiece(payload: { width: number; height: number }) {
     if (this.selectPieceId !== null) {
-      this.toggleDisabled();
-      this.gameField.setPiece(payload.height, payload.width);
-      this.boardKey += 1;
+      this.socket.emit('setPiece', RoomModule.roomId, payload.height, payload.width);
+      this.syncGameField();
     }
   }
 
   private result() {
-    this.showResultNotification = true;
-    this.resultState = this.gameField.getJudgeResult();
+    this.socket.emit('judgeResult', RoomModule.roomId);
   }
 
-  private toggleDisabled() {
-    this.boardDisabled = !this.boardDisabled;
-    this.pieceStackDisabled = !this.pieceStackDisabled;
+  private setPhase(phase: 'select' | 'put') {
+    if (phase === 'select') {
+      this.boardDisabled = true;
+      this.pieceStackDisabled = false;
+    } else if (phase === 'put') {
+      this.boardDisabled = false;
+      this.pieceStackDisabled = true;
+    }
   }
 
   @Watch('selectPieceId')
   private selectPiece() {
-    if (this.selectPieceId !== null) {
-      this.toggleDisabled();
-      this.gameField.selectPiece(this.selectPieceId);
+    if (this.selectPieceId !== null && this.currentPlayerId === RoomModule.userId) {
+      this.socket.emit('selectPiece', RoomModule.roomId, this.selectPieceId);
+      this.syncGameField();
     }
+  }
+
+  private syncGameField() {
+    this.socket.emit('syncGameField', RoomModule.roomId);
+    this.socket.on('boardState', (boardState: BoardState) => {
+      this.boardState = boardState;
+      this.boardKey++;
+    });
+    this.socket.on('pieces', (item: {
+      pieces: Array<Piece | null>;
+      selectPieceId: number;
+    }) => {
+      console.log('item: ', item);
+      this.pieceStackKey++;
+      this.pieces = item.pieces;
+      if (item.selectPieceId !== undefined) {
+        this.selectPieceId = item.selectPieceId;
+      }
+    });
+    this.socket.on('phase', (phase: 'select' | 'put') => {
+      this.setPhase(phase);
+    });
+    this.socket.on('getCurrentPlayer', (player: Player) => {
+      this.currentPlayerId = player.id;
+      this.currentPlayerName = player.name;
+      if (this.currentPlayerId === RoomModule.userId) {
+        RoomModule.SET_USER_TURN(true);
+      } else {
+        RoomModule.SET_USER_TURN(false);
+      }
+    });
+    // this.socket.on('selectPieceId', (pieceId?: number) => {
+    //   this.selectPieceId = pieceId || null;
+    // });
+    this.socket.on('getJudgeResult', (judge: boolean) => {
+      this.showResultNotification = true;
+      this.resultState = judge;
+    });
   }
 }
 </script>

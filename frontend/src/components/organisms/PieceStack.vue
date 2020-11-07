@@ -35,6 +35,7 @@ import {
   Vue,
   Prop,
   PropSync,
+  Emit,
 } from 'vue-property-decorator';
 import Piece from '@/domain/models/Piece';
 import PieceImg from '@/components/atoms/PieceImg.vue';
@@ -63,32 +64,16 @@ export default class extends Vue {
       for (let j = 0; j < 4; j++) {
         const piece = this.pieceState[4 * i + j];
         if (piece !== null) {
-          this.pieceIds[i].push(this.pieceState[4 * i + j].getId());
+          this.pieceIds[i].push(piece.id);
         } else {
-          break;
+          continue;
         }
       }
     }
   }
 
-  // updated() {
-  //   for (let i = 0; i < 4; i++) {
-  //     this.pieceIds.push([]);
-  //     for (let j = 0; j < 4; j++) {
-  //       const piece = this.pieceState[4 * i + j];
-  //       if (piece !== null) {
-  //         this.pieceIds[i].push(this.pieceState[4 * i + j].getId());
-  //       } else {
-  //         break;
-  //       }
-  //     }
-  //   }
-  // }
-
   private isDisplayed(pieceId: number) {
-    // this.pieceState.findIndex((p) => p.getId() === pieceId);
     return !!this.pieceState[pieceId];
-    // return this.pieceState.findIndex((p) => p.getId() === pieceId) !== -1;
   }
 }
 </script>

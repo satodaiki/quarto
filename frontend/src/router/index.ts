@@ -27,6 +27,10 @@ const routes: Array<RouteConfig> = [
     name: 'WebsocketTest',
     component: WebsocketTest,
   },
+  // {
+  //   path: '*',
+  //   redirect: '/',
+  // },
 ];
 
 const router = new VueRouter({

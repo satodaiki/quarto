@@ -65,7 +65,7 @@ export default class extends Vue {
   private calcPieceId(width: number, height: number): number {
     const tempSquares = this.boardState?.squares[width][height];
     if (tempSquares) {
-      return tempSquares.getId();
+      return tempSquares.id;
     }
 
     return -1;

@@ -38,7 +38,7 @@ export default class extends Vue {
       this.loading = true;
       if (count === 2) {
         this.loading = false;
-        this.$router.push('/main')
+        this.$router.push('/main');
       }
     });
   }

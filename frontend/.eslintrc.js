@@ -12,6 +12,7 @@ module.exports = {
     ecmaVersion: 2020,
   },
   rules: {
+    '@typescript-eslint/no-non-null-assertion': 'off',
     'class-methods-use-this': 'off',
     'eqeqeq': 'off',
     'no-continue': 'off',
