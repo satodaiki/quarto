@@ -12,7 +12,7 @@
       <v-container fill-height class="flex-nowrap">
         <v-container class="board-inner-container">
           <v-row v-for="i in 4" :key="i" justify="center" no-gutters>
-            <v-col v-for="j in 4" :key="j">
+            <v-col v-for="j in 4" :key="j" cols="3">
               <v-img
                 class="board-unit-img"
                 @click="setPiece(i - 1, j - 1)"
