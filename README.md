@@ -1,30 +1,25 @@
-# quart
+# QUARTO
 
-## docker run
+## 起動方法
+
+以下のコマンドを入力して下さい。
 
 ```
-docker run -it -p 8080:8080 -v ${PWD}:/local node:10 bash -c "cd local && yarn && yarn serve"
-```
-
-## Project setup
-```
-yarn install
+docker-compose up -d
 ```
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+expressサーバーは3000、フロントエンドのサーバーは3100で起動します。
 
-### Compiles and minifies for production
-```
-yarn build
-```
+## 開発者へ
 
-### Lints and fixes files
-```
-yarn lint
-```
+本番用サーバーは一時的にherokuで構築しています。
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+フロントの動作検証の際は`yarn serve --mode production`で起動してください。
+
+## 備忘録
+
+Herokuへのデプロイの際は、ルートディレクトリから以下のコマンドでいけます。
+
+```
+git subtree push --prefix server heroku master
+```

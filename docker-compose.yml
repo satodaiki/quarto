@@ -1,0 +1,23 @@
+version: '2'
+
+services:
+  quarto_frontend:
+    image: node:15
+    command: >
+      bash -c "cd app &&
+      yarn &&
+      yarn serve"
+    volumes:
+      - ./frontend/:/app/
+    ports:
+      - "3100:8080"
+  quarto_server:
+    image: node:15
+    command: >
+      bash -c "cd app &&
+      yarn &&
+      yarn start:dev"
+    volumes:
+      - ./server/:/app/
+    ports:
+      - "3000:3000"
