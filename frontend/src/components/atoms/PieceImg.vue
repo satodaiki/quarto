@@ -1,8 +1,6 @@
 <template>
   <v-img
     :contain="true"
-    :height="200"
-    :width="100"
     :src="require(`@/assets/pieces/${pieceId}.png`)"
   />
 </template>

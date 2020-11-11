@@ -17,8 +17,6 @@
                 class="board-unit-img"
                 @click="setPiece(i - 1, j - 1)"
                 src="@/assets/board/unit.png"
-                width="8vw"
-                height="8vw"
                 :contain="true"
               >
                 <PieceImg
@@ -76,7 +74,7 @@ export default class extends Vue {
 <style lang="scss">
 .board-inner-container {
   transform:rotate(45deg);
-  padding: 8vw 8vw 8vw 7vw;
+  padding: 15% 15% 15% 15%;
 }
 .board-unit-img {
   transform:rotate(-45deg);
@@ -85,7 +83,6 @@ export default class extends Vue {
 }
 .piece-img {
   position: absolute;
-  top: -3vw;
-  left: 1vw;
+  top: -100%;
 }
 </style>

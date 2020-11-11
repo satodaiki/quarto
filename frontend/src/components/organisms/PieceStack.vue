@@ -9,7 +9,7 @@
     >
       <v-container fill-height>
         <v-row v-for="pieceRow in pieceIds" :key="pieceRow" no-gutters>
-          <v-col v-for="pieceId in pieceRow" :key="pieceId" md="auto">
+          <v-col v-for="pieceId in pieceRow" :key="pieceId" cols="3">
             <v-item
               v-slot="{ active, toggle }"
               :value="pieceId"
