@@ -55,8 +55,7 @@ import ResultNotification from '@/components/organisms/ResultNotification.vue';
 import Board from '@/components/organisms/Board.vue';
 import PieceStack from '@/components/organisms/PieceStack.vue';
 import PlayerName from '@/components/atoms/PlayerName.vue';
-// import GameField from '@/domain/models/GameField';
-import BoardState from '@/domain/models/BoardState';
+import IBoardState from '@/domain/models/IBoardState';
 import Piece from '@/domain/models/Piece';
 import Player from '@/domain/models/Player';
 import { WebSocketStateModule } from '@/store/modules/WebSocketStateModule';
@@ -80,7 +79,7 @@ export default class extends Vue {
 
   // private gameField: GameField = new GameField();
 
-  private boardState: BoardState | null = null;
+  private boardState: IBoardState | null = null;
 
   private pieces: Array<Piece | null> | null = null;
 
@@ -149,7 +148,7 @@ export default class extends Vue {
 
   private syncGameField() {
     this.socket.emit('syncGameField', RoomModule.roomId);
-    this.socket.on('boardState', (boardState: BoardState) => {
+    this.socket.on('boardState', (boardState: IBoardState) => {
       this.boardState = boardState;
       this.boardKey++;
     });
@@ -157,7 +156,6 @@ export default class extends Vue {
       pieces: Array<Piece | null>;
       selectPieceId: number;
     }) => {
-      console.log('item: ', item);
       this.pieceStackKey++;
       this.pieces = item.pieces;
       if (item.selectPieceId !== undefined) {
@@ -176,9 +174,6 @@ export default class extends Vue {
         RoomModule.SET_USER_TURN(false);
       }
     });
-    // this.socket.on('selectPieceId', (pieceId?: number) => {
-    //   this.selectPieceId = pieceId || null;
-    // });
     this.socket.on('getJudgeResult', (judge: boolean) => {
       this.showResultNotification = true;
       this.resultState = judge;

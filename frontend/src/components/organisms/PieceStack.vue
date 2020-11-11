@@ -35,7 +35,6 @@ import {
   Vue,
   Prop,
   PropSync,
-  Emit,
 } from 'vue-property-decorator';
 import Piece from '@/domain/models/Piece';
 import PieceImg from '@/components/atoms/PieceImg.vue';

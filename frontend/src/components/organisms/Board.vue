@@ -42,7 +42,7 @@ import {
   Emit,
 } from 'vue-property-decorator';
 import PieceImg from '@/components/atoms/PieceImg.vue';
-import BoardState from '@/domain/models/BoardState';
+import IBoardState from '@/domain/models/IBoardState';
 
 @Component({
   name: 'Board',
@@ -52,7 +52,7 @@ import BoardState from '@/domain/models/BoardState';
 })
 export default class extends Vue {
   @Prop({ type: Object })
-  private boardState?: BoardState;
+  private boardState?: IBoardState;
 
   @Prop({ type: Boolean, required: true })
   private disabled!: boolean;
