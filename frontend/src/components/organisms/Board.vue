@@ -6,6 +6,7 @@
     color="grey darken-4"
   >
     <v-img
+      class="board-img"
       src="@/assets/board/outline.png"
       contain
     >
@@ -72,6 +73,11 @@ export default class extends Vue {
 </script>
 
 <style lang="scss">
+@import '~vuetify/src/styles/settings/_variables';
+
+.board-img {
+  overflow: inherit;
+}
 .board-inner-container {
   transform:rotate(45deg);
   padding: 15% 15% 15% 15%;
@@ -83,6 +89,12 @@ export default class extends Vue {
 }
 .piece-img {
   position: absolute;
-  top: -100%;
+  bottom: 10px;
+  padding: 0 20px;
+}
+@media #{map-get($display-breakpoints, 'sm-and-down')} {
+  .piece-img {
+    padding: 0 7px;
+  }
 }
 </style>
