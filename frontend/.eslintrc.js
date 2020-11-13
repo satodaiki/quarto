@@ -19,6 +19,7 @@ module.exports = {
     'no-plusplus': 'off',
     'no-restricted-syntax': 'off',
     'no-unused-expressions': 'off',
+    "import/no-unresolved": "off",
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
   },
