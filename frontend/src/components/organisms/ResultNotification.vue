@@ -20,7 +20,7 @@
           v-if="isAgain"
           color="primary"
           text
-          @click="reset()"
+          @click="reset"
         >
           Again?
         </v-btn>
@@ -34,6 +34,7 @@ import {
   Component,
   Vue,
   Prop,
+  Emit,
 } from 'vue-property-decorator';
 
 @Component({
@@ -67,9 +68,11 @@ export default class extends Vue {
     return `${this.playerName} lose.`;
   }
 
+  @Emit()
   private reset() {
+    console.log('unti');
     // this.$router.replace({ path: this.$router.currentRoute.path });
-    this.$router.go(0);
+    // this.$router.go(0);
   }
 }
 </script>

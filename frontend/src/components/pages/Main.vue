@@ -38,6 +38,7 @@
       :message="resultMessage"
       :result="resultState"
       :is-again="isResultAgain"
+      @reset="resetRoom"
     />
     <v-overlay :value="!isUserTurn()" :z-index="0">
       <v-container fill-height>
@@ -161,6 +162,12 @@ export default class extends Vue {
     }
   }
 
+  private resetRoom() {
+    this.socket.emit('resetRoom', RoomModule.roomId);
+    this.syncGameField();
+    this.showResultNotification = false;
+  }
+
   @Watch('selectPieceId')
   private selectPiece() {
     if (this.selectPieceId !== null && this.currentPlayerId === RoomModule.userId) {
@@ -200,6 +207,9 @@ export default class extends Vue {
     this.socket.on('getJudgeResult', (judge: boolean) => {
       this.showResultNotification = true;
       this.resultState = judge;
+    });
+    this.socket.on('resetRoom', () => {
+      this.showResultNotification = false;
     });
   }
 }

@@ -37,13 +37,19 @@ io.on("connection", (socket) => {
         io.to(roomId).emit('roomPersonCount', personCount);
     });
 
-    
-    socket.on('leaveRoom',
-    (roomId: string) => {
-        logger.info('leaveRoom: ' + roomId);
+    socket.on('leaveRoom', (roomId: string) => {
         socket.leave(roomId);
         io.to(roomId).emit('leavePlayer', null);
-    })
+    });
+
+    socket.on('resetRoom', (roomId: string) => {
+        logger.info('resetRoom: ' + roomId);
+        const i = games.findIndex(game => game.roomId === roomId);
+        if (i !== -1) {
+            games[i].gameField = new GameField(games[i].playerA, games[i].playerB!);
+        }
+        io.to(roomId).emit('resetRoom', null);
+    });
 
     socket.on('syncGameField', (roomId: string) => {
         const i = games.findIndex(game => game.roomId === roomId);
