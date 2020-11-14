@@ -36,7 +36,7 @@ import {
   Prop,
   PropSync,
 } from 'vue-property-decorator';
-import Piece from '@/domain/models/Piece';
+import IPiece from '@/domain/models/IPiece';
 import PieceImg from '@/components/atoms/PieceImg.vue';
 
 @Component({
@@ -47,7 +47,7 @@ import PieceImg from '@/components/atoms/PieceImg.vue';
 })
 export default class extends Vue {
   @Prop({ type: Array, required: true })
-  private pieceState!: Piece[];
+  private pieceState!: IPiece[];
 
   @Prop({ type: Boolean, required: true })
   private disabled!: boolean;

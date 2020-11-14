@@ -35,15 +35,27 @@
     <ResultNotification
       :show="showResultNotification"
       :playerName="currentPlayerName"
+      :message="resultMessage"
       :result="resultState"
+      :is-again="isResultAgain"
+      @reset="resetRoom"
     />
-    <v-overlay :value="!isUserTurn()">
+    <v-overlay :value="!isUserTurn()" :z-index="0">
       <v-container fill-height>
         <v-row justify="center">
           相手のターンです。
         </v-row>
       </v-container>
     </v-overlay>
+    <v-btn
+      color="primary"
+      fixed
+      bottom
+      right
+      @click="leaveRoom"
+    >
+      部屋から出る
+    </v-btn>
   </v-container>
 </template>
 
@@ -54,8 +66,8 @@ import Board from '@/components/organisms/Board.vue';
 import PieceStack from '@/components/organisms/PieceStack.vue';
 import PlayerName from '@/components/atoms/PlayerName.vue';
 import IBoardState from '@/domain/models/IBoardState';
-import Piece from '@/domain/models/Piece';
-import Player from '@/domain/models/Player';
+import IPiece from '@/domain/models/IPiece';
+import IPlayer from '@/domain/models/IPlayer';
 import { WebSocketStateModule } from '@/store/modules/WebSocketStateModule';
 import { RoomModule } from '@/store/modules/RoomModule';
 
@@ -79,7 +91,7 @@ export default class extends Vue {
 
   private boardState: IBoardState | null = null;
 
-  private pieces: Array<Piece | null> | null = null;
+  private pieces: Array<IPiece | null> | null = null;
 
   private selectPieceId: number | null = null;
 
@@ -95,7 +107,16 @@ export default class extends Vue {
 
   private currentPlayerName: string | null = null;
 
+  private resultMessage: string | null = null;
+
+  private isResultAgain = true;
+
   mounted() {
+    this.socket.on('leavePlayer', () => {
+      this.showResultNotification = true;
+      this.isResultAgain = false;
+      this.resultMessage = '相手プレイヤーが退出しました。';
+    });
     this.syncGameField();
   }
 
@@ -113,6 +134,11 @@ export default class extends Vue {
     }
 
     return 'ボードに配置して下さい。';
+  }
+
+  private leaveRoom() {
+    this.socket.emit('leaveRoom', RoomModule.roomId);
+    this.$router.push('/');
   }
 
   private setBoardPiece(payload: { width: number; height: number }) {
@@ -136,6 +162,12 @@ export default class extends Vue {
     }
   }
 
+  private resetRoom() {
+    this.socket.emit('resetRoom', RoomModule.roomId);
+    this.syncGameField();
+    this.showResultNotification = false;
+  }
+
   @Watch('selectPieceId')
   private selectPiece() {
     if (this.selectPieceId !== null && this.currentPlayerId === RoomModule.userId) {
@@ -151,7 +183,7 @@ export default class extends Vue {
       this.boardKey++;
     });
     this.socket.on('pieces', (item: {
-      pieces: Array<Piece | null>;
+      pieces: Array<IPiece | null>;
       selectPieceId: number;
     }) => {
       this.pieceStackKey++;
@@ -163,7 +195,7 @@ export default class extends Vue {
     this.socket.on('phase', (phase: 'select' | 'put') => {
       this.setPhase(phase);
     });
-    this.socket.on('getCurrentPlayer', (player: Player) => {
+    this.socket.on('getCurrentPlayer', (player: IPlayer) => {
       this.currentPlayerId = player.id;
       this.currentPlayerName = player.name;
       if (this.currentPlayerId === RoomModule.userId) {
@@ -175,6 +207,9 @@ export default class extends Vue {
     this.socket.on('getJudgeResult', (judge: boolean) => {
       this.showResultNotification = true;
       this.resultState = judge;
+    });
+    this.socket.on('resetRoom', () => {
+      this.showResultNotification = false;
     });
   }
 }
