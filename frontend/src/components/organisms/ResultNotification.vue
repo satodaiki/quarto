@@ -2,7 +2,7 @@
   <v-dialog
     v-model="show"
     persistent
-    max-width="290"
+    max-width="400"
   >
     <v-card>
       <v-card-title class="d-flex justify-center">
@@ -17,6 +17,7 @@
           Exit
         </v-btn>
         <v-btn
+          v-if="isAgain"
           color="primary"
           text
           @click="reset()"
@@ -48,7 +49,17 @@ export default class extends Vue {
   @Prop({ type: Boolean })
   private result?: boolean;
 
+  @Prop({ type: String })
+  private message?: string;
+
+  @Prop({ type: Boolean, default: true })
+  private isAgain!: boolean;
+
   private resultMessage() {
+    if (this.message) {
+      return this.message;
+    }
+
     if (this.result) {
       return `${this.playerName} win.`;
     }

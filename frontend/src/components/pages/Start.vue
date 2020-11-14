@@ -35,9 +35,6 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-row class="mt-12" justify="center">
-      <v-btn to="/main" color="primary">Start</v-btn>
-    </v-row>
     <v-overlay :value="loading">
       <v-container fill-height>
         <v-row justify="center">

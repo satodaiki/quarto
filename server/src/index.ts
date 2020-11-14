@@ -19,7 +19,8 @@ const games: {
 }[] = [];
 
 io.on("connection", (socket) => {
-    socket.on('joinRoom', (roomId: string, userId: string, userName: string, firstStrike: boolean = false) => {
+    socket.on('joinRoom',
+    (roomId: string, userId: string, userName: string, firstStrike = false) => {
         socket.join(roomId);
         // 先攻は必ず最初にemitされる
         if (firstStrike) {
@@ -27,18 +28,26 @@ io.on("connection", (socket) => {
         } else {
             const i = games.findIndex(game => game.roomId === roomId);
             if (i !== -1) {
-                games[i].playerB = new Player(userId, userName);
-                games[i].gameField = new GameField(games[i].playerA, games[i].playerB!);
+                const playerB = new Player(userId, userName);
+                games[i].playerB = playerB
+                games[i].gameField = new GameField(games[i].playerA, playerB);
             }
         }
         const personCount = io.sockets.adapter.rooms[roomId].length;
         io.to(roomId).emit('roomPersonCount', personCount);
     });
 
+    
+    socket.on('leaveRoom',
+    (roomId: string) => {
+        logger.info('leaveRoom: ' + roomId);
+        socket.leave(roomId);
+        io.to(roomId).emit('leavePlayer', null);
+    })
+
     socket.on('syncGameField', (roomId: string) => {
         const i = games.findIndex(game => game.roomId === roomId);
         if (i !== -1) {
-            console.log('selectPieceId: ', games[i].gameField?.currentPlayer.pieceId);
             io.to(roomId).emit('boardState', games[i].gameField?.boardState);
             io.to(roomId).emit('phase', games[i].gameField?.phase);
             io.to(roomId).emit('pieces', {
@@ -46,7 +55,6 @@ io.on("connection", (socket) => {
                 selectPieceId: games[i].gameField?.currentPlayer.pieceId,
             });
             io.to(roomId).emit('getCurrentPlayer', games[i].gameField?.currentPlayer);
-            // io.to(roomId).emit('selectPieceId', games[i].gameField?.currentPlayer.pieceId);
         }
     });
 
