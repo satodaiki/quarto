@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row justify="center">
-      {{ timer }}
+      <span class="text-h4">制限時間: {{ timer }}</span>
     </v-row>
     <v-row justify="center">
       <PlayerName :playerName="currentPlayerName"/>
