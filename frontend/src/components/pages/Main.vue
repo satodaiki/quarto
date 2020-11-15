@@ -1,6 +1,9 @@
 <template>
   <v-container>
     <v-row justify="center">
+      {{ timer }}
+    </v-row>
+    <v-row justify="center">
       <PlayerName :playerName="currentPlayerName"/>
     </v-row>
     <v-row class="my-4" justify="center">
@@ -111,6 +114,8 @@ export default class extends Vue {
 
   private isResultAgain = true;
 
+  private timer = 60;
+
   mounted() {
     this.socket.on('leavePlayer', () => {
       this.showResultNotification = true;
@@ -118,6 +123,15 @@ export default class extends Vue {
       this.resultMessage = '相手プレイヤーが退出しました。';
     });
     this.syncGameField();
+
+    const timer = setInterval(() => {
+      this.timer--;
+      if (this.timer === 0) {
+        this.showResultNotification = true;
+        this.resultState = false;
+        clearInterval(timer);
+      }
+    }, 1000);
   }
 
   get socket() {
@@ -194,6 +208,9 @@ export default class extends Vue {
     });
     this.socket.on('phase', (phase: 'select' | 'put') => {
       this.setPhase(phase);
+      if (phase === 'put') {
+        this.timer = 60;
+      }
     });
     this.socket.on('getCurrentPlayer', (player: IPlayer) => {
       this.currentPlayerId = player.id;
