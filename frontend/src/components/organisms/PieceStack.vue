@@ -58,10 +58,18 @@ export default class extends Vue {
   private pieceIds: number[][] = [];
 
   mounted() {
+    this.shufflePieces();
+  }
+
+  private shufflePieces() {
+    let pieces: IPiece[] = [];
+    for (let i = 0; i < this.pieceState.length; i++) {
+      pieces = this.createReplaceArrayRandom(this.pieceState);
+    }
     for (let i = 0; i < 4; i++) {
       this.pieceIds.push([]);
       for (let j = 0; j < 4; j++) {
-        const piece = this.pieceState[4 * i + j];
+        const piece = pieces[4 * i + j];
         if (piece !== null) {
           this.pieceIds[i].push(piece.id);
         } else {
@@ -69,6 +77,23 @@ export default class extends Vue {
         }
       }
     }
+  }
+
+  private createReplaceArrayRandom<T>(arr: T[]) {
+    const randA = Math.floor(Math.random() * (arr.length - 1));
+    let randB = -1;
+    // eslint-disable-next-line no-constant-condition
+    while (randB === -1 || randA === randB) {
+      randB = Math.floor(Math.random() * (arr.length - 1));
+    }
+
+    const returnArr = arr;
+
+    const temp = returnArr[randA];
+    returnArr[randA] = returnArr[randB];
+    returnArr[randB] = temp;
+
+    return returnArr;
   }
 
   private isDisplayed(pieceId: number) {

@@ -21,6 +21,7 @@
                 :contain="true"
               >
                 <PieceImg
+                  v-if="calcPieceId(i - 1, j - 1) !== -1"
                   class="piece-img"
                   :pieceId="calcPieceId(i - 1, j - 1)"
                 />
