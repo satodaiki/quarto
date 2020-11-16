@@ -57,9 +57,9 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 // app.set('views', viewsDir);
 // const staticDir = path.join(__dirname, 'public');
 // app.use(express.static(staticDir));
-app.get('*', (req: Request, res: Response) => {
-    res.send('hello world');
-});
+// app.get('*', (req: Request, res: Response) => {
+//     res.send('hello world');
+// });
 
 // Export express instance
 export default app;

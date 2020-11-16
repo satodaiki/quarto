@@ -1,6 +1,7 @@
 import './preStart'; // Must be the first import
 import app from '@server';
 import logger from '@shared/Logger';
+import { Request, Response } from 'express';
 
 import GameField from './domain/models/GameField';
 import Player from './domain/models/Player';
@@ -8,15 +9,19 @@ import Player from './domain/models/Player';
 import http from 'http';
 import socketio from 'socket.io';
 
-const server = http.createServer(app);
-const io = socketio(server);
-
 const games: {
     roomId: string,
     playerA: Player,
     playerB?: Player,
     gameField?: GameField
 }[] = [];
+
+app.get('/count_rooms', (req: Request, res: Response) => {
+    res.send('ken');
+});
+
+const server = http.createServer(app);
+const io = socketio(server);
 
 io.on("connection", (socket) => {
     socket.on('joinRoom',
