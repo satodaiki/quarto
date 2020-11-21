@@ -69,7 +69,8 @@ export default class extends Vue {
   }
 
   private async createRoom() {
-    RoomModule.CREATE_ROOM_ID();
+    await RoomModule.createRoomId();
+    // RoomModule.CREATE_ROOM_ID();
     RoomModule.CREATE_USER_ID();
     RoomModule.SET_USER_NAME(this.playerName);
     this.socket.emit('joinRoom', RoomModule.roomId, RoomModule.userId, RoomModule.userName, true);
