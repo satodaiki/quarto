@@ -17,7 +17,9 @@ const games: {
 }[] = [];
 
 app.get('/count_rooms', (req: Request, res: Response) => {
-    res.send('ken');
+    res.json({
+        count: games.length
+    })
 });
 
 const server = http.createServer(app);
