@@ -40,6 +40,9 @@
         <v-row justify="center">
           ルームIDは「{{ roomId }}」です。
         </v-row>
+        <v-row v-if="isShareEnabled" justify="center" class="mt-4">
+            <v-btn @click="share">Share</v-btn>
+        </v-row>
       </v-container>
     </v-overlay>
   </v-container>
@@ -68,6 +71,10 @@ export default class extends Vue {
     return RoomModule.roomId;
   }
 
+  get isShareEnabled() {
+    return navigator.share;
+  }
+
   private async createRoom() {
     await RoomModule.createRoomId();
     // RoomModule.CREATE_ROOM_ID();
@@ -89,6 +96,16 @@ export default class extends Vue {
     RoomModule.SET_USER_NAME(this.playerName);
     this.socket.emit('joinRoom', RoomModule.roomId, RoomModule.userId, RoomModule.userName);
     this.$router.push('/main');
+  }
+
+  private async share() {
+    try {
+      await navigator.share({
+        text: RoomModule.roomId || '',
+      });
+    } catch (e) {
+      console.log(e);
+    }
   }
 }
 </script>
